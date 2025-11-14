@@ -1,6 +1,8 @@
+from unfold.admin import ModelAdmin
 from django.contrib import admin
+
 from .models import Ticket, SolutionMessage
-# from unfold.contrib.forms.widgets import WysiwygWidget
+from unfold.contrib.forms.widgets import WysiwygWidget
 from django import forms
 
 # Form for Ticket
@@ -9,8 +11,7 @@ class TicketForm(forms.ModelForm):
         model = Ticket
         fields = '__all__'
         widgets = {
-            # 'description': WysiwygWidget(),
-            'title': forms.TextInput(attrs={'style': 'width: 400px;'}),
+            'description': WysiwygWidget(),
         }
 
 # Form for SolutionMessage
@@ -19,7 +20,7 @@ class SolutionMessageForm(forms.ModelForm):
         model = SolutionMessage
         fields = '__all__'
         widgets = {
-            # 'message': WysiwygWidget(), 
+            'message': WysiwygWidget(), 
         }
 
 # Inline for SolutionMessage
@@ -54,7 +55,7 @@ class SolutionMessageInline(admin.StackedInline):
 
 # TicketAdmin with Inline
 @admin.register(Ticket)
-class TicketAdmin(admin.ModelAdmin):
+class TicketAdmin(ModelAdmin):
     form = TicketForm
     list_display = ('id', 'title', 'status', 'priority', 'impact', 'created_by', 'assigned_to', 'created_at')
     list_filter = ('status', 'priority', 'impact', 'category')
@@ -105,7 +106,7 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 @admin.register(SolutionMessage)
-class SolutionMessageAdmin(admin.ModelAdmin):
+class SolutionMessageAdmin(ModelAdmin):
     form = SolutionMessageForm
     list_display = ('id', 'ticket', 'updated_at')
     list_filter = ('updated_at',)
